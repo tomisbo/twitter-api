@@ -23,7 +23,7 @@ class TestTweetViews(TestCase):
         db.session.commit()
         response = self.client.get("/tweets/1")
         response_tweet = response.json
-        print(response_tweet)
+#        print(response_tweet)
         self.assertEqual(response_tweet["id"], 1)
         self.assertEqual(response_tweet["text"], "First tweet")
         self.assertIsNotNone(response_tweet["created_at"])
@@ -39,11 +39,17 @@ class TestTweetViews(TestCase):
         first_tweet = Tweet(text="First tweet")
         db.session.add(first_tweet)
         db.session.commit()
+        response = self.client.get("/tweets/1")
+        response_tweet = response.json
+        print(response_tweet)
+
         response = self.client.patch("/tweets/1", json={'text': 'New text'})
         updated_tweet = response.json
+
         response2 = self.client.get("/tweets/1")
         response2_tweet = response2.json
         print(response2_tweet)
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(updated_tweet["id"], 1)
         self.assertEqual(updated_tweet["text"], "New text")

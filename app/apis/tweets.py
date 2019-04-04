@@ -4,6 +4,8 @@ from app.models import Tweet
 
 from app import db
 
+from schema import tweets_schema, tweet_schema
+
 api = Namespace('tweets')
 
 json_tweet = api.model('Tweet', {
@@ -63,3 +65,9 @@ class TweetsResource(Resource):
             return tweet, 201
         else:
             return abort(422, "Tweet text can't be empty")
+
+    def get(self):
+        tweets = db.session.query(Tweet).all()
+        return tweets_schema.jsonify(tweets)
+
+
